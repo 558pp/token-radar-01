@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src file: 'self'; style-src file: 'self'; img-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Launch Atlas · Token launch radar</title>
+  <link rel="stylesheet" href="app.css">
+  <script defer src="../data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#workspace">Skip to protocols</a>
+  <header class="masthead">
+    <div class="shell mast-inner">
+      <a class="brand" href="#" aria-label="Launch Atlas home"><i class="mark" aria-hidden="true"></i> Launch<span>Atlas</span></a>
+      <nav aria-label="Dashboard views">
+        <a id="ranked-tab" href="#board">Radar</a>
+        <a id="trading-tab" href="#trading">Trading reference</a>
+      </nav>
+      <div class="snapshot"><i aria-hidden="true"></i><span id="snapshot-date">Sealed snapshot</span></div>
+    </div>
+  </header>
+
+  <main class="shell" id="workspace">
+    <div id="load-error" class="load-error" role="alert" hidden>Snapshot data is unavailable. Open the dashboard from a generated output directory.</div>
+    <section id="board-view">
+      <section id="hero" class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="hero-tag"><span></span> DEFI LAUNCH INTELLIGENCE</div>
+          <h1 id="hero-title">Token launch radar</h1>
+          <p>Explore DeFi protocols with no token recorded in the snapshot. Compare implied launch values and open a protocol to see its farm plan.</p>
+          <div class="hero-stats" id="hero-stats"></div>
+        </div>
+        <figure class="hero-chart">
+          <figcaption><span>Implied value by rank</span><span>USD · log scale</span></figcaption>
+          <canvas id="rank-chart" width="980" height="284" role="img" aria-label="Log-scale chart of implied values for the first 200 ranked protocols"></canvas>
+          <div class="chart-key"><span><i></i> Watchlist</span><span><i></i> Below floor</span></div>
+        </figure>
+      </section>
+
+      <section class="results" aria-labelledby="results-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="results-title">Ranked protocols</h2>
+            <p id="results-caption">Sealed DefiLlama snapshot. Values reflect a modeled launch scenario.</p>
+          </div>
+          <a class="secondary" id="model-link" href="#method">How values are calculated <span aria-hidden="true">↗</span></a>
+        </div>
+        <form id="filters" class="filters" role="search" autocomplete="off">
+          <label class="search-wrap"><span>Search protocols</span><span class="control search-control"><i aria-hidden="true"></i><input type="search" id="query" placeholder="Name, slug or symbol"></span></label>
+          <label><span>Category</span><select id="category" class="control"></select></label>
+          <label><span>Chain</span><select id="chain" class="control"></select></label>
+          <label><span>Sort by</span><select id="sort" class="control"></select></label>
+          <button id="reset" class="secondary reset" type="button">Reset</button>
+        </form>
+        <div class="table-card">
+          <div class="table-status"><span id="result-count" aria-live="polite"></span><span id="active-filters"></span></div>
+          <div class="table-scroll" role="region" aria-labelledby="results-title" tabindex="0">
+            <table>
+              <thead id="table-head"></thead>
+              <tbody id="table-body"></tbody>
+            </table>
+          </div>
+          <p id="empty" class="empty" hidden>No protocols match these filters. Try another chain, category or search term.</p>
+          <div class="pager" id="pager">
+            <span id="page-count"></span>
+            <div><button id="prev" type="button" class="secondary">Previous</button><button id="next" type="button" class="secondary">Next</button></div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <article id="detail-view" hidden aria-labelledby="detail-title"></article>
+
+    <section id="method" class="method" hidden aria-labelledby="method-title">
+      <a class="back" href="#board">← Back to radar</a>
+      <div class="method-body">
+        <h1 id="method-title" tabindex="-1">How values are calculated</h1>
+        <p>Launch Atlas estimates the hypothetical dollar value of a token if the protocol’s snapshot record stayed as it is. The snapshot captures TVL, which can move with asset prices and flows. It does not record launch schedules or campaign eligibility.</p>
+        <div class="formula">Implied value = TVL × seven-day momentum × tracking tenure</div>
+        <dl id="method-factors" class="method-factors"></dl>
+        <h2>Coverage and token status</h2>
+        <p id="method-coverage"></p>
+        <p>“Trading reference” means the snapshot contains a CoinGecko ID, symbol or market cap. Board records lack all three fields. Verify current token and campaign status with official documentation.</p>
+        <p id="method-source" class="muted"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer"><span>Launch Atlas</span><span id="footer-source">DefiLlama snapshot</span></footer>
+  <noscript><p class="shell load-error">Enable JavaScript to browse the offline snapshot.</p></noscript>
+</body>
+</html>
